@@ -75,7 +75,7 @@ async function generateConfig() {
       throw new Error('UPTIME_KUMA_BASE_URL must be a valid URL');
     }
 
-    const isEditThisPage = getBooleanEnvVar('FEATURE_EDIT_THIS_PAGE');
+    const isEditThisPage = getBooleanEnvVar('FEATURE_EDIT_THIS_PAGE', false);
     const isShowStarButton = getBooleanEnvVar('FEATURE_SHOW_STAR_BUTTON');
     const siteMeta = await fetchSiteMeta(baseUrl, pageId);
 
