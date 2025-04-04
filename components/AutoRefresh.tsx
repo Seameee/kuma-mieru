@@ -7,12 +7,13 @@ import utc from 'dayjs/plugin/utc';
 import { Pause, Play, RefreshCw } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { type ReactNode, useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 interface AutoRefreshProps {
-  onRefresh: () => Promise<void>;
+  onRefresh: () => Promise<void> | void;
   interval?: number;
   children: ReactNode;
 }
@@ -93,16 +94,38 @@ export default function AutoRefresh({ onRefresh, interval = 60000, children }: A
     setShowRefreshAnimation(true);
 
     try {
-      await onRefresh();
+      const toastId = toast.loading(t('timerRefreshing'));
+      
+      const result = onRefresh();
+      if (result instanceof Promise) {
+        await result;
+      }
+      
+      toast.success(t('timerRefreshSuccess'), {
+        id: toastId,
+      });
+      
       setLastRefreshTime(dayjs().valueOf());
     } catch (error) {
       console.error(t('errorRefresh'), ':', error);
+      toast.error(`${t('errorRefresh')}: ${error instanceof Error ? error.message : t('errorUnknown')}`);
     } finally {
       setIsRefreshing(false);
       setTimeLeft(interval);
       setTimeout(() => setShowRefreshAnimation(false), 500);
     }
   }, [isRefreshing, onRefresh, interval, t]);
+
+  const handleTogglePause = useCallback(() => {
+    const newPausedState = !isPaused;
+    setIsPaused(newPausedState);
+
+    if (newPausedState) {
+      toast.info(t('timerPausedInfo'));
+    } else {
+      toast.info(t('timerResumedInfo'));
+    }
+  }, [isPaused, t]);
 
   useEffect(() => {
     if (isPaused) return;
@@ -147,7 +170,7 @@ export default function AutoRefresh({ onRefresh, interval = 60000, children }: A
           </div>
 
           <div className="flex items-center gap-2">
-            <ControlButton isPaused={isPaused} onClick={() => setIsPaused(!isPaused)} />
+            <ControlButton isPaused={isPaused} onClick={handleTogglePause} />
             <RefreshButton isRefreshing={isRefreshing} onClick={handleRefresh}>
               {t('timerRefreshNow')}
             </RefreshButton>

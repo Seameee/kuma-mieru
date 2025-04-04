@@ -1,14 +1,40 @@
 'use client';
 
-import { locales } from '@/utils/i18n/config';
+import { type Locale, locales } from '@/utils/i18n/config';
 import { setUserLocale } from '@/utils/i18n/locale';
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, cn } from '@heroui/react';
 import { Languages, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useTransition } from 'react';
+import { toast } from 'sonner';
 
 export const I18NSwitch = () => {
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations();
+
+  const handleLocaleChange = (locale: Locale, localeName: string) => {
+    startTransition(async () => {
+      try {
+        const toastId = toast.loading(t('localeChanging', { locale: localeName }));
+
+        await setUserLocale(locale);
+
+        toast.success(t('localeChanged', { locale: localeName }), {
+          id: toastId,
+        });
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
+      } catch (error) {
+        console.error('Failed to change locale:', error);
+        toast.error(
+          `${t('localeChangeError')}: ${error instanceof Error ? error.message : t('errorUnknown')}`,
+        );
+      }
+    });
+  };
 
   return (
     <Dropdown aria-label="Switch Language">
@@ -25,11 +51,7 @@ export const I18NSwitch = () => {
         {locales.map((item) => (
           <DropdownItem
             key={item.key}
-            onPress={() =>
-              startTransition(() => {
-                setUserLocale(item.key);
-              })
-            }
+            onPress={() => handleLocaleChange(item.key, item.name)}
             className="flex flex-row items-center gap-2 text-default-500"
             startContent={
               <Image
