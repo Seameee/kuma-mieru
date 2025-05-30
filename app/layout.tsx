@@ -52,7 +52,9 @@ export default async function RootLayout({
 
   return (
     <html suppressHydrationWarning={true} lang={locale}>
-      <head />
+      <head>
+        <SeayaAnalytics />
+      </head>
       <body
         className={clsx(
           'min-h-screen bg-background font-sans antialiased',
@@ -60,7 +62,6 @@ export default async function RootLayout({
           fontMono.variable,
         )}
       >
-        <SeayaAnalytics />
         <NextIntlClientProvider messages={messages}>
           <Providers themeProps={{ attribute: 'class', defaultTheme: theme }}>
             <div className="relative flex flex-col h-screen">
