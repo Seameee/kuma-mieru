@@ -3,8 +3,8 @@ import { clsx } from 'clsx';
 import type { Metadata, Viewport } from 'next';
 
 import { Footer } from '@/components/Footer';
-import Analytics from '@/components/basic/google-analytics';
 import { Navbar } from '@/components/basic/navbar';
+import Analytics from '@/components/basic/seaya-analytics';
 import { fontMono, fontSans } from '@/config/fonts';
 import { siteConfig } from '@/config/site';
 import packageJson from '@/package.json';
