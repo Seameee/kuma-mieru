@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import type { Metadata, Viewport } from 'next';
 
 import { Footer } from '@/components/Footer';
-import Analytics from '@/components/basic/google-analytics';
+import SeayaAnalytics from '@/components/basic/seaya-analytics';
 import { Navbar } from '@/components/basic/navbar';
 import { fontMono, fontSans } from '@/config/fonts';
 import { siteConfig } from '@/config/site';
@@ -48,7 +48,7 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   const { config } = await getGlobalConfig();
-  const { theme, googleAnalyticsId } = config;
+  const { theme } = config;
 
   return (
     <html suppressHydrationWarning={true} lang={locale}>
@@ -60,7 +60,7 @@ export default async function RootLayout({
           fontMono.variable,
         )}
       >
-        {googleAnalyticsId && <Analytics id={googleAnalyticsId} />}
+        <SeayaAnalytics />
         <NextIntlClientProvider messages={messages}>
           <Providers themeProps={{ attribute: 'class', defaultTheme: theme }}>
             <div className="relative flex flex-col h-screen">
