@@ -2,13 +2,13 @@
 
 import { Alert } from '@/components/ui/Alert';
 import type { Maintenance } from '@/types/config';
-import { Progress, Card, CardBody, Chip } from '@heroui/react';
-import { AlertCircle, Clock, Wrench, Calendar, Timer } from 'lucide-react';
+import { Card, CardBody, Chip, Progress } from '@heroui/react';
+import clsx from 'clsx';
+import { AlertCircle, Calendar, Clock, Timer, Wrench } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { dateStringToTimestamp } from '../utils/format';
 import { getMarkdownClasses, useMarkdown } from '../utils/markdown';
-import clsx from 'clsx';
 
 function MaintenanceAlert({ maintenance }: { maintenance: Maintenance }) {
   const t = useTranslations('maintenance');
