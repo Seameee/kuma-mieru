@@ -4,7 +4,6 @@ import type { Metadata, Viewport } from 'next';
 
 import { Footer } from '@/components/Footer';
 import { Navbar } from '@/components/basic/navbar';
-import Analytics from '@/components/basic/seaya-analytics';
 import { fontMono, fontSans } from '@/config/fonts';
 import { siteConfig } from '@/config/site';
 import packageJson from '@/package.json';
@@ -61,7 +60,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           fontMono.variable,
         )}
       >
-        {googleAnalyticsId && <Analytics id={googleAnalyticsId} />}
         <NextIntlClientProvider messages={messages}>
           <Providers themeProps={{ attribute: 'class', defaultTheme: theme }}>
             <div className="relative flex flex-col h-screen">
