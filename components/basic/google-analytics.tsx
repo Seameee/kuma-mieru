@@ -2,13 +2,7 @@
 
 import Script from 'next/script';
 
-interface AnalyticsProps {
-  id: string;
-}
-
-export default function Analytics({ id }: AnalyticsProps) {
-  if (!id) return null;
-
+export default function Analytics() {
   return (
     <Script
       strategy="afterInteractive"

@@ -56,7 +56,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           fontMono.variable,
         )}
       >
-        {googleAnalyticsId && <Analytics id={googleAnalyticsId} />}
+        <Analytics />
         <Providers
           locale={locale}
           messages={messages}
